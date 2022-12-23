@@ -1,11 +1,11 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput: string) => rawInput
+const parseInput = (rawInput: string) => rawInput.split('\n').splitOn('')
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
-
-  return
+console.log(input)  
+  return input
 }
 
 const part2 = (rawInput: string) => {

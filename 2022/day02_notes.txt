@@ -1,5 +1,0 @@
-
-
-    A = X Rock
-    B = Y Paper
-    C = Z Scissors
