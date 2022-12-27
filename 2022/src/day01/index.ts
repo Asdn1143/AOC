@@ -1,17 +1,28 @@
 import run from "aocrunner"
 
-const parseInput = (rawInput: string) => rawInput.split('\n').splitOn('')
+const parseInput = (rawInput: string) => rawInput.split('\n\n')
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
-console.log(input)  
-  return input
+  
+  const result = input.map((a)=>{    
+    const final = a.split("\n").map(Number)
+    return final.reduce((a,b)=>a+b,0)
+  }) 
+  
+  return Math.max(...result)
 }
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
 
-  return
+  const result = input.map((a)=>{    
+    const final = a.split("\n").map(Number)
+    return final.reduce((a,b)=>a+b,0)
+  }) 
+  result.sort()
+
+  return result.slice(-3).reduce((a,b)=>a+b)
 }
 
 run({
