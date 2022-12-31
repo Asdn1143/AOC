@@ -5,7 +5,7 @@ const parseInput = (rawInput: string) => rawInput
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
 
-  return
+  return 
 }
 
 const part2 = (rawInput: string) => {
@@ -17,10 +17,10 @@ const part2 = (rawInput: string) => {
 run({
   part1: {
     tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
+      {
+        input: ``,
+        expected: '',
+      },
     ],
     solution: part1,
   },
@@ -34,5 +34,5 @@ run({
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: false,
+  onlyTests: true,
 })
