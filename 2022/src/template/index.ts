@@ -23,7 +23,7 @@ run({
     tests: [
       {
         input: ``,
-        expected: '',
+        expected: 0,
       },
     ],
     solution: part1,
@@ -32,7 +32,7 @@ run({
     tests: [
       {
         input: ``,
-        expected: "",
+        expected: 0,
       },
     ],
     solution: part2,
