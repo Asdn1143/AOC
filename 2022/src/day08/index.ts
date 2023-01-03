@@ -7,14 +7,37 @@ const parseInput = (rawInput: string) => {
 }
 
 const checkBorderingUnits = (a:number[][]) =>{
-  console.log(a);
+  console.table(a);
   
   for (let row = 1; row < a.length-1; row++) {  
     for (let col = 1; col < a[0].length-1; col++) {
     const element = a[row][col];  
-      let distances = [[row],[a.length-col-1],[a.length-row-1],[col]]
-      //N,E,S,W
-      
+    let  covered = true
+    let [height,length] = [a.length,a[0].length]  
+    //N,E,S,W
+    let distances:number[] = [row,a.length-col-1,a.length-row-1,col]
+     
+
+    let neighbors:number[][] = [[],[],[],[]]
+    for (let n = 0; n < distances[0]; n++) {
+        neighbors[0].push(a[row-(n+1)][col])
+        
+    }
+    if([...neighbors[0]].){
+      covered = false
+    }
+    
+    for (let e = 0; e < distances[1]; e++) {
+      neighbors[1].push(a[row][col+(e+1)])
+    }
+    for (let s = 0; s < distances[2]; s++) {
+      neighbors[2].push(a[row+(s+1)][col])
+    }
+    for (let w = 0; w < distances[3]; w++) {
+      neighbors[3].push(a[row][col-(w+1)])
+    }
+
+    console.log(element,neighbors,covered);
     }
   }
   return
