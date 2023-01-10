@@ -1,14 +1,8 @@
 import run from "aocrunner"
-import { table } from "console"
 
 const parseInput = (rawInput: string) => {
   return rawInput.split('\n')
 }
-
-let wait = (time:number) => {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
 
 const createMatrix = (dim:number, base:string = '.') =>{
   let matrix:string[][] =[] 
@@ -24,13 +18,11 @@ const createMatrix = (dim:number, base:string = '.') =>{
 }
 
 const movesToMatrix =(moves:string[]) =>{
-  let result = 13
+  let result = 0
 
-  let matrixDim = 6
+  let matrixDim = 1000
   let matrixEmptySpace =""
   let matrix = createMatrix(matrixDim,matrixEmptySpace)
-
-  let passed = new Set()
   
   let posH:number[] = [matrixDim-1,0]
   let preH:number[] = [matrixDim-1,0]
@@ -40,7 +32,6 @@ const movesToMatrix =(moves:string[]) =>{
     let[direct,count] = [move[0],Number(move[2])]
 
     for (let i = 0; i < count; i++) {
-      console.log(move,posH,preH,posT);
 
       preH = [...posH]
       switch (direct) {
@@ -52,15 +43,20 @@ const movesToMatrix =(moves:string[]) =>{
         break;
         case "L": posH[1]--
         break;
-        
       }
-      // if(Math.abs(posH[0]))
-    }
 
-    matrix[posT[0]][posT[1]] = "T"
-    matrix[posH[0]][posH[1]] = "H"
+      let distance = [posH[0]-posT[0],posH[1]-posT[1]]
+      if (Math.abs(distance[0])==2||Math.abs(distance[1])==2){
+        posT = [...preH]
+        result++
+        // matrix[posT[0]][posT[1]] = "#"  
+      }
+    // uncommment for debugging
+    // console.log(move,posH,preH,posT,"",distance);
+    // matrix[posH[0]][posH[1]] = "H"
+    // matrix[posT[0]][posT[1]] = "T"
+  }
     // console.table(matrix)
-    
   })
   
   return result
@@ -69,7 +65,6 @@ const movesToMatrix =(moves:string[]) =>{
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
   
-    
   let result = movesToMatrix(input)
 
   return result
@@ -109,5 +104,5 @@ R 2`,
     solution: part2,
   },
   trimTestInputs: true,
-  onlyTests: true,
+  // onlyTests: true,
 })
