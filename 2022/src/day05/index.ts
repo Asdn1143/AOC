@@ -1,81 +1,141 @@
 import run from "aocrunner"
 
+function rotateArr90(arr: string[]) {
+  const rows = arr.length;
+
+  let cols = 0;
+  for (let i = 0; i < rows; i++) {
+    cols = Math.max(cols, arr[i].length);
+  }
+
+  const result = Array.from({ length: cols }, () => Array(rows));
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      result[col][rows - 1 - row] = arr[row][col];
+    }
+  }
+
+  return result.map(a => a.join(""))
+}
+
+function extractNumbers(str: string) {
+  let currentNumber = '';
+  const numbers = [];
+  for (const char of str) {
+    if (isNaN(parseInt(char, 10))) {
+      if (currentNumber) {
+        numbers.push(parseInt(currentNumber, 10));
+        currentNumber = '';
+      }
+    } else {
+      currentNumber += char;
+    }
+  }
+  if (currentNumber) {
+    numbers.push(parseInt(currentNumber, 10));
+  }
+  return numbers;
+}
+
+
+
 const parseInput = (rawInput: string) => {
-  
-// let inputWidth = rawInput[0][0].split('').length
-// console.log(rawInput);
 
-let input:string[][] =  rawInput.split('\n\n').map(a=>a.split('\n'))
-// console.log(input);
+  let input: string[][] = rawInput.split('\n\n').map(a => a.split('\n'))
+  let inputStack = input[0]
+  let inputMoves = input[1]
 
-// console.log(rawInput.split('\n\n')[0][0].length);
+  // console.log(inputStack);
+  // console.log(inputMoves);
 
-input[0] = input[0].slice(0,-1)
 
-let column:any[] = []
-let temp:any[][] = [] 
-// console.log(typeof input[0][0].length);
 
-// let inputWidth:number = input[0][0].replaceAll(undefined,"a")
-// console.log(inputWidth);
+  inputStack = inputStack.slice(0, -1)
 
-// console.log(input[0][0].length);
+  inputStack = rotateArr90(inputStack)
 
-for (let j = 1; j < input[0][0].length; j+=4){
-for (let i = 0; i < input[0].length; i++) {
-let element:any = input[0][i][j]
-// console.log(i,j,((j-1)/4),element);
-column.push(element)
+  inputStack = inputStack.filter((_, i) => (i - 1) % 4 === 0).map(a => a.replace(/\s/gm, ""))
+
+  inputMoves = inputMoves.map(a => extractNumbers(a))
+
+  input = [inputStack, inputMoves]
+
+  return input
 }
-temp.push(column.reverse())
-column = []
-}
-// console.log(typeof input[0][0]);
+const makeMovePt1 = (S: string[], M: number[]) => {
+  let [count, from, to] = M
 
-input[0] = temp.map(a=>a.filter(a=>a!=" "))
-input[1] = input[1].map(a=>a.replace(/[a-z]| /gm,""));
-
-return input
-}
-
-const moveAndShowTops = (a:any) =>{ 
-  // console.log(a);
-  
-  let [stack,moves] = a
-  
-  moves.forEach((move:any) => {
-  let[count,from,to] = move
   from--
   to--
-  // console.log(stack);
-  
-  let temp = stack[from].splice(-count)
-  temp.reverse().forEach((a:any) => {
-    stack[to].push(a)
-  }); 
 
-  });
-  
-  let result = stack.map((a:string[])=>a.pop()).join('')
+  for (let i = 0; i < count; i++) {
+    let temp = S[from].slice(-1)
+
+    S[from] = S[from].slice(0, -1)
+    // console.log(temp);
+
+    S[to] += temp
+
+  }
+
+  let result: string[] = S
+  return result
+}
+const makeMovePt2 = (S: string[], M: number[]) => {
+  let [count, from, to] = M
+  from--
+  to--
+
+
+  let temp = S[from].slice(-count)
+
+  S[from] = S[from].slice(0, -count)
+
+
+  S[to] += temp
+  // console.table(S);
+  let result: string[] = S
   return result
 }
 
+const makeAllMovesPt1 = (a: any) => {
+  let [stack, moves] = a
+
+  moves.forEach((move: number[]) => {
+    stack = makeMovePt1(stack, move)
+  });
+
+  let result = stack
+  return result
+}
+
+const makeAllMovesPt2 = (a: any) => {
+  let [stack, moves] = a
+
+  moves.forEach((move: number[]) => {
+    stack = makeMovePt2(stack, move)
+  });
+
+  let result = stack
+  return result
+}
+
+
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  
-  
-  
-  let result = moveAndShowTops(input)
+  console.log(input);
 
-
+  let result = makeAllMovesPt1(input)
+  result = result.map(a => a.slice(-1)).join("")
   return result
 }
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  let result = 0
-
-  return result 
+  let result = makeAllMovesPt2(input)
+  result = result.map(a => a.slice(-1)).join("")
+  return result
 }
 
 run({
@@ -99,12 +159,20 @@ move 1 from 1 to 2`,
   part2: {
     tests: [
       {
-        input: ``,
-        expected: 0,
+        input: `    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2`,
+        expected: "MCD",
       },
     ],
     solution: part2,
   },
   trimTestInputs: false,
-  onlyTests:false,
+  // onlyTests: true,
 })

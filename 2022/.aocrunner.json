@@ -61,16 +61,18 @@
     },
     {
       "part1": {
-        "solved": false,
-        "result": "CMZ",
-        "attempts": [],
-        "time": 8.910479
+        "solved": true,
+        "result": "BSDMQFLSP",
+        "attempts": [
+          "CMZ"
+        ],
+        "time": 4.4739
       },
       "part2": {
-        "solved": false,
-        "result": "0",
+        "solved": true,
+        "result": "PGSQBFLDP",
         "attempts": [],
-        "time": 8.290074
+        "time": 0.8828
       }
     },
     {
